@@ -1,5 +1,6 @@
 package com.paulopontes.dscatalog.services;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import com.paulopontes.dscatalog.dto.CategoryDTO;
 import com.paulopontes.dscatalog.dto.ProductDTO;
 import com.paulopontes.dscatalog.entities.Category;
 import com.paulopontes.dscatalog.entities.Product;
+import com.paulopontes.dscatalog.projections.ProductProjection;
 import com.paulopontes.dscatalog.repositories.CategoryRepository;
 import com.paulopontes.dscatalog.repositories.ProductRepository;
 import com.paulopontes.dscatalog.services.exceptions.DatabaseException;
@@ -90,5 +92,10 @@ public class ProductService {
 			Category category = categoryRepository.getReferenceById(catDto.getId());
 			entity.getCategories().add(category);
 		}
+	}
+
+	@Transactional(readOnly = true)
+	public Page<ProductProjection> testQuery(Pageable pageable) {
+		return repository.searchProducts(Arrays.asList(), "", pageable);
 	}
 }
